@@ -74,9 +74,9 @@ public:
 	FGameplayAttributeData Intelligence;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Intelligence);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resillience, Category = "Primary Attributes")
-	FGameplayAttributeData Resillience;
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Resillience);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "Primary Attributes")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Resilience);
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Primary Attributes")
 	FGameplayAttributeData Vigor;
@@ -159,7 +159,7 @@ public:
 	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const;
 
 	UFUNCTION()
-	void OnRep_Resillience(const FGameplayAttributeData& OldResillience) const;
+	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
 
 	UFUNCTION()
 	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
