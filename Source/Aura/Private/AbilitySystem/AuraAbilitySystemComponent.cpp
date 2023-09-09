@@ -12,6 +12,26 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 
 }
 
+void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+{
+	for (TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+
+		// 2 options for granting abilities (const will not work for this)
+
+		// method 1 GiveAbility
+		// just grants ability
+		
+		//GiveAbility(AbilitySpec);
+
+		//method 2
+		// grants and activates once
+		
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
                                                 const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
