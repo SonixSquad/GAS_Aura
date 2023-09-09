@@ -67,9 +67,37 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Secondary.MaxMana"),
 		FString("Determines maximum Mana level"));
 
-	// Vital Att Tags
-	//GameplayTags.Attributes_Vital_Health = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Vital.Health"), FString("Determines current Health level"));
-	//GameplayTags.Attributes_Vital_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Vital.Mana"), FString("Determines current Mana level"));
+//Input Tags
+
+	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.LMB"),
+		FString("Input Tag for LMB Button")
+		);
+
+	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.RMB"),
+		FString("Input Tag for RMB Button")
+		);
+
+	GameplayTags.InputTag_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.1"),
+		FString("Input Tag for 1 Button")
+		);
+
+		GameplayTags.InputTag_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.2"),
+		FString("Input Tag for 2 Button")
+		);
+
+	GameplayTags.InputTag_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("InputTag.3"),
+			FString("Input Tag for 3 Button")
+			);
+
+	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("InputTag.4"),
+		FString("Input Tag for 4 Button")
+		);
 	
 
 
