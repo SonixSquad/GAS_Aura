@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/AssetManager.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AuraAssetManager.generated.h"
 
 /**
