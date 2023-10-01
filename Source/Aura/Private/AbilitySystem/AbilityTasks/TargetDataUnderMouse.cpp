@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
-
 #include "AbilitySystemComponent.h"
 
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
@@ -45,7 +44,6 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
 	FHitResult CursorHit;
 	PC->GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
-	//ValidData.Broadcast(CursorHit.Location);
 	
 
 	FGameplayAbilityTargetDataHandle DataHandle;
@@ -62,6 +60,11 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 		FGameplayTag(),
 		AbilitySystemComponent->ScopedPredictionKey
 	);
+
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
+	}
 }
 
 void UTargetDataUnderMouse::OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag)
