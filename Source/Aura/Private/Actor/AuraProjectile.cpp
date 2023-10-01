@@ -54,6 +54,7 @@ void AAuraProjectile::Destroyed()
 		if (LoopingSoundComponent != nullptr)
 		{
 			LoopingSoundComponent->Stop();
+			LoopingSoundComponent->DestroyComponent();
 		}
 	}
 	Super::Destroyed();
@@ -68,6 +69,7 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 	if (LoopingSoundComponent != nullptr)
 	{
 		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent(); 
 	}
 	
 	// checks if server authority otherwise just set bHit to true
