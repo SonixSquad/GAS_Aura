@@ -49,6 +49,9 @@ public:
 	//Caller Magnitude tags
 	FGameplayTag Damage;
 
+	//Hit Reaction Tags
+	FGameplayTag Effects_Hitreact;
+
 	
 
 
