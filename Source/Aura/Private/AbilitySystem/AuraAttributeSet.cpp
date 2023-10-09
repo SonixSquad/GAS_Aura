@@ -7,7 +7,6 @@
 #include "AuraGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
-#include "Chaos/ChaosPerfTest.h"
 
 #include "Net/UnrealNetwork.h"
 
@@ -153,6 +152,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.f;
+			if (!bFatal)
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_Hitreact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 }
