@@ -46,6 +46,9 @@ public:
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
 
+	//Caller Magnitude tags
+	FGameplayTag Damage;
+
 	
 
 
