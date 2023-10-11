@@ -80,7 +80,7 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	}
 }
 
-void UAuraAttributeSet::SetFEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
+void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
 
 	// Source - causer of effect, Target = target of effect (owner of this AttributeSet)
@@ -130,7 +130,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	
 	FEffectProperties Props;
-	SetFEffectProperties(Data, Props);
+	SetEffectProperties(Data, Props);
 	
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
