@@ -13,6 +13,8 @@ class UCombatInterface : public UInterface
 	GENERATED_BODY()
 };
 
+class UAnimMontage;
+
 /**
  * 
  */

@@ -56,7 +56,7 @@ int32 AAuraEnemy::GetPlayerLevel()
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCharacterMovement()->MaxWalkSpeed  = BaseWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
 	UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 	
@@ -82,7 +82,7 @@ void AAuraEnemy::BeginPlay()
 				}
 			);
 			
-			AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_Hitreact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
 				this,
 				&AAuraEnemy::HitReactTagChanged
 			);

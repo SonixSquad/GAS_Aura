@@ -50,7 +50,7 @@ public:
 	FGameplayTag Damage;
 
 	//Hit Reaction Tags
-	FGameplayTag Effects_Hitreact;
+	FGameplayTag Effects_HitReact;
 
 	
 

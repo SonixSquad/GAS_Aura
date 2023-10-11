@@ -43,7 +43,7 @@ void AAuraProjectile::BeginPlay()
 	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
 }
 
-// on destyroyed being called before the server authority replicates, checks if bHit was set to true by the server otherwise does nothing on client
+// on destroyed being called before the server authority replicates, checks if bHit was set to true by the server otherwise does nothing on client
 
 void AAuraProjectile::Destroyed()
 {
