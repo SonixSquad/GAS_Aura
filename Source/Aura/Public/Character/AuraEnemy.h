@@ -65,5 +65,5 @@ protected:
 
 	
 
-	//InitializeDefaaultAttributes
+	//Initialize Default Attributes
 };

@@ -4,13 +4,15 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
-#include "AuraGameplayTags.h"
+
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
-#include "Interaction/CombatInterface.h"
-#include "Kismet/GameplayStatics.h"
-
 #include "Net/UnrealNetwork.h"
+#include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Interaction/CombatInterface.h"
+
+#include "Kismet/GameplayStatics.h" //remove later
 #include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -89,7 +91,6 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	// Source - causer of effect, Target = target of effect (owner of this AttributeSet)
 	
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
-	
 	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
 
 	if (IsValid(Props.SourceASC) && Props.SourceASC->AbilityActorInfo.IsValid() && Props.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
