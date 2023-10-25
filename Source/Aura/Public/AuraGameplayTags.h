@@ -48,6 +48,9 @@ public:
 
 	//Caller Magnitude tags
 	FGameplayTag Damage;
+	FGameplayTag Damage_Fire;
+
+	TArray<FGameplayTag> DamageTypes;
 
 	//Hit Reaction Tags
 	FGameplayTag Effects_HitReact;
