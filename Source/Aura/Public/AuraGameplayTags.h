@@ -36,6 +36,12 @@ public:
 	FGameplayTag Attributes_Secondary_CritHitResist;
 	FGameplayTag Attributes_Secondary_HealthRegen;
 	FGameplayTag Attributes_Secondary_ManaRegen;
+
+	//resistance tags
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
 	
 
 	//Input Tags
@@ -49,8 +55,12 @@ public:
 	//Caller Magnitude tags
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
+	FGameplayTag Damage_Lightning;
+	FGameplayTag Damage_Arcane;
+	FGameplayTag Damage_Physical;
 
-	TArray<FGameplayTag> DamageTypes;
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	
 
 	//Hit Reaction Tags
 	FGameplayTag Effects_HitReact;
