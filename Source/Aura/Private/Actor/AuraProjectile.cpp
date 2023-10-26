@@ -63,14 +63,23 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	
-	if (LoopingSoundComponent != nullptr)
+	if (DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)
 	{
-		LoopingSoundComponent->Stop();
-		LoopingSoundComponent->DestroyComponent(); 
+		return;
 	}
+	if (!bHit)
+	{	
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	
+	
+		if (LoopingSoundComponent != nullptr)
+		{
+			LoopingSoundComponent->Stop();
+			LoopingSoundComponent->DestroyComponent(); 
+		}
+	}
+	
 	
 	// checks if server authority otherwise just set bHit to true
 	if (HasAuthority())
