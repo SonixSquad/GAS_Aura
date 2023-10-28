@@ -25,6 +25,12 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	// disable snap rotation via controller and set to desired rotation
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
