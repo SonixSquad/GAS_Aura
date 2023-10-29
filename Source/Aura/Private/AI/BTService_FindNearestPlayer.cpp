@@ -11,7 +11,7 @@ void UBTService_FindNearestPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, u
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	APawn* OwningPawn = AIOwner->GetPawn();
+	const APawn* OwningPawn = AIOwner->GetPawn();
 
 	const FName TargetTag = OwningPawn->ActorHasTag(FName("Player")) ? FName("Enemy") : FName("Player");
 
@@ -20,7 +20,7 @@ void UBTService_FindNearestPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, u
 
 	float ClosestDistance = TNumericLimits<float>::Max();
 	AActor* ClosestActor = nullptr;
-	for (auto Actor : ActorsWithTag)
+	for (AActor* Actor : ActorsWithTag)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, .5f, FColor::Orange, *Actor->GetName());
 
