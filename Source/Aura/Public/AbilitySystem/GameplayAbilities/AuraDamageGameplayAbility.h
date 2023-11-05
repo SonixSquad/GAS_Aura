@@ -6,7 +6,7 @@
 #include "AbilitySystem/GameplayAbilities/AuraGameplayAbility.h"
 #include "AuraDamageGameplayAbility.generated.h"
 
-/**
+/**   o
  * 
  */
 UCLASS()

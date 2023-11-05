@@ -12,6 +12,8 @@ class UEnemyInterface : public UInterface
 {
 	GENERATED_BODY()
 };
+class GetCombatTarget;
+class SetCombatTarget;
 
 /**
  * 
