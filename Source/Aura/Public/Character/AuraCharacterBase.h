@@ -46,7 +46,7 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
 	//spawn location for projectiles
