@@ -8,6 +8,7 @@
 
 class AAuraProjectile;
 class UGameplayEffect;
+struct FGameplayTag;
 /**
  * 
  */
@@ -22,7 +23,7 @@ protected:
 
 
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
-	void SpawnProjectile(const FVector& ProjectileTargetLocation);
+	void SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AAuraProjectile> ProjectileClass;
