@@ -64,7 +64,7 @@ private:
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 
 	
-	UPROPERTY(EditAnywhere, Category="Input")
+	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	UPROPERTY()
