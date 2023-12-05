@@ -15,6 +15,14 @@ enum class ECharacterClass : uint8
 	Elementalist,
 	Warrior,
 	Ranger
+	//GhoulReaver
+};
+
+UENUM(BlueprintType, Blueprintable)
+enum class EEnemyAttackType : uint8
+{
+	Melee,
+	Ranged
 };
 
 USTRUCT(BlueprintType)

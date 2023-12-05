@@ -48,10 +48,13 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	
 	AuraAIController->RunBehaviorTree(BehaviorTree);
+
+	//AuraAIController->GetBlackboardComponent()->SetValueAsEnum(FName("RangedMelee"), static_cast<uint8>(GoblinReaver.AttackType));
 	
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), false);
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
-	
+	//AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedMeleeAttacker"), CharacterClass != ECharacterClass::Ranger);
+	//AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedMeleeAttacker"), CharacterClass = ECharacterClass::RangedMelee );
 }
 
 void AAuraEnemy::HighLightActor()
