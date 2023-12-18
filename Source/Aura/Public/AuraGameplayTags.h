@@ -37,11 +37,14 @@ public:
 	FGameplayTag Attributes_Secondary_HealthRegen;
 	FGameplayTag Attributes_Secondary_ManaRegen;
 
-	//resistance tags
+	//Resistance tags
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Physical;
+
+	//Meta tags
+	FGameplayTag Attributes_Meta_IncomingXP;
 	
 
 	//Input Tags
