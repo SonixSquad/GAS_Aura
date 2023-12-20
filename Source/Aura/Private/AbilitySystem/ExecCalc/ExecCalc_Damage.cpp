@@ -89,8 +89,16 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		
 	AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
-	ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
-	ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
+	int32 SourcePlayerLevel = 1;
+	if (SourceAvatar->Implements<UCombatInterface>())
+	{
+		SourcePlayerLevel = ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
+	}
+	int32 TargetPlayerLevel = 1;
+	if (TargetAvatar->Implements<UCombatInterface>())
+	{
+		TargetPlayerLevel = ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
+	}
 	
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 
@@ -152,7 +160,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 	const FRealCurve* ArmorPenCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPen"), FString());
-	const float ArmorPenCoefficient = ArmorPenCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	const float ArmorPenCoefficient = ArmorPenCurve->Eval(SourcePlayerLevel);
 
 	
 	//Armor penetration ignores a percentage of targets armor
@@ -160,7 +168,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	//Pull value from DT
 	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
-	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetCombatInterface->GetPlayerLevel());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetPlayerLevel);
 	
 	//Armor ignores a percentage of incoming damage
 	Damage *= ( 100 - EffectiveArmor * EffectiveArmorCoefficient ) / 100.f;
@@ -179,7 +187,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	//Pull value from DT
 	const FRealCurve* CritHitResistCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CritHitResist"), FString());
-	const float CritHitResistCoefficient = CritHitResistCurve->Eval(TargetCombatInterface->GetPlayerLevel());
+	const float CritHitResistCoefficient = CritHitResistCurve->Eval(TargetPlayerLevel);
 	
 	//CritHit Resistance reduces CritHit Chance by a certain percentage
 	const float EffectiveCritHitChance = SourceCritHitChance - TargetCritHitResist * CritHitResistCoefficient;
