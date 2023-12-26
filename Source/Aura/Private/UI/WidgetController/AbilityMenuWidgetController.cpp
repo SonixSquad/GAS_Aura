@@ -5,7 +5,7 @@
 
 void UAbilityMenuWidgetController::BroadcastInitialValues()
 {
-	
+	BroadcastAbilityInfo();
 }
 
 void UAbilityMenuWidgetController::BindCallbacksToDependencies()
