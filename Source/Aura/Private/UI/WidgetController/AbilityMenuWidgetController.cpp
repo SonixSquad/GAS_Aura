@@ -15,8 +15,16 @@ void UAbilityMenuWidgetController::BroadcastInitialValues()
 
 void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 {
-	GetAuraASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	GetAuraASC()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 NewLevel)
 	{
+		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
+		{
+			SelectedAbility.Status = StatusTag;
+			bool bEnableSpendPoints = false;
+			bool bEnableEquip = false;
+			ShouldEnableButtons(StatusTag, CurrentAbilityPoints, bEnableSpendPoints, bEnableEquip);
+			AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
+		}
 		if (AbilityInfo)
 		{
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
@@ -28,6 +36,12 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 	GetAuraPS()->OnAbilityPointsChangedDelegate.AddLambda([this](int32 AbilityPoints)
 	{
 		AbilityPointsChanged.Broadcast(AbilityPoints);
+		CurrentAbilityPoints = AbilityPoints;
+
+		bool bEnableSpendPoints = false;
+		bool bEnableEquip = false;
+		ShouldEnableButtons(SelectedAbility.Status, CurrentAbilityPoints, bEnableSpendPoints, bEnableEquip);
+		AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
 	});
 }
 
@@ -50,10 +64,21 @@ void UAbilityMenuWidgetController::AbilitySlotSelected(const FGameplayTag& Abili
 		AbilityStatus = GetAuraASC()->GetStatusFromSpec(*AbilitySpec);
 	}
 
+	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Status = AbilityStatus;
+
 	bool bEnableSpendPoints = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, AbilityPoints, bEnableSpendPoints, bEnableEquip);
 	AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
+}
+
+void UAbilityMenuWidgetController::SpendPointButtonPressed()
+{
+	if (GetAuraASC())
+	{
+		GetAuraASC()->ServerSpendAbilityPoint(SelectedAbility.Ability);
+	}
 }
 
 void UAbilityMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 AbilityPoints, bool& bShouldEnableAbilityPointsButton, bool& bShouldEnableEquipButton)
