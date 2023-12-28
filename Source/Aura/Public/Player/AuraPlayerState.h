@@ -68,7 +68,7 @@ private:
 	int32 AttributePoints = 0;
 
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_AbilityPoints)
-	int32 AbilityPoints = 1;
+	int32 AbilityPoints = 0;
 	
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
