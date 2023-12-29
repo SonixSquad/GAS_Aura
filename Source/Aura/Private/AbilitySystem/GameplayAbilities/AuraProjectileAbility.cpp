@@ -40,7 +40,6 @@ void UAuraProjectileAbility::SpawnProjectile(const FVector& ProjectileTargetLoca
 	SpawnTransform.SetLocation(SocketLocation);
 	SpawnTransform.SetRotation(Rotation.Quaternion());
 	
-
 	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(
 		ProjectileClass,
 		SpawnTransform,

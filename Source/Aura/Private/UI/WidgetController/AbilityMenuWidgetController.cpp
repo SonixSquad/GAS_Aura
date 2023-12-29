@@ -23,7 +23,10 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 			bool bEnableSpendPoints = false;
 			bool bEnableEquip = false;
 			ShouldEnableButtons(StatusTag, CurrentAbilityPoints, bEnableSpendPoints, bEnableEquip);
-			AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
+			FString Description;
+			FString NextLevelDescription;
+			GetAuraASC()->GetDescriptionsByAbilityTag(AbilityTag, Description, NextLevelDescription);
+			AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
 		}
 		if (AbilityInfo)
 		{
@@ -41,7 +44,10 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 		bool bEnableSpendPoints = false;
 		bool bEnableEquip = false;
 		ShouldEnableButtons(SelectedAbility.Status, CurrentAbilityPoints, bEnableSpendPoints, bEnableEquip);
-		AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
+		FString Description;
+		FString NextLevelDescription;
+		GetAuraASC()->GetDescriptionsByAbilityTag(SelectedAbility.Ability, Description, NextLevelDescription);
+		AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
 	});
 }
 
@@ -70,7 +76,10 @@ void UAbilityMenuWidgetController::AbilitySlotSelected(const FGameplayTag& Abili
 	bool bEnableSpendPoints = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, AbilityPoints, bEnableSpendPoints, bEnableEquip);
-	AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
+	FString Description;
+	FString NextLevelDescription;
+	GetAuraASC()->GetDescriptionsByAbilityTag(AbilityTag, Description, NextLevelDescription);
+	AbilitySlotSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
 }
 
 void UAbilityMenuWidgetController::SpendPointButtonPressed()
