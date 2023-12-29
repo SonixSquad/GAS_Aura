@@ -157,6 +157,8 @@ void UAbilityMenuWidgetController::OnAbilityEquipped(const FGameplayTag& Ability
 	AbilityInfoDelegate.Broadcast(Info);
 
 	StopWaitingForEquipDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType);
+	AbilitySlotReassignedDelegate.Broadcast(AbilityTag);
+	SlotDeselect();
 }
 
 
