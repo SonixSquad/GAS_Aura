@@ -9,6 +9,7 @@ FAuraGameplayTags FAuraGameplayTags::GameplayTags;
 void FAuraGameplayTags::InitializeNativeGameplayTags()
 {
 	// Primary Att Tags
+	
 	GameplayTags.Attributes_Primary_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Strength"),
 		FString("Determines Strength level"));
@@ -26,6 +27,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Determines Vigor level"));
 	
 	// Secondary Att Tags
+	
 	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.Armor"),
 		FString("Reduces damage taken, improves Block Chance"));
@@ -114,9 +116,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 			FString("Damage")
 			);
 
-	/*
-	 ** Damage Types
-	 */
+
+	// Damage Types
 	
 	GameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Damage.Fire"),
@@ -138,7 +139,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Physical Damage Type")
 		);
 	
-	//Debuff Types
+	// Debuff Types
 
 	GameplayTags.Debuff_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Debuff.Arcane"),
@@ -157,7 +158,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Debuff for Lightning damage")
 		);
 
-	//Debuff Properties
+	// Debuff Properties
 	
 	GameplayTags.Debuff_Chance = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Debuff.Chance"),
@@ -176,9 +177,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Debuff Frequency")
 		);
 	
-	/*
-	 ** Resistances
-	 */
+
+	// Resistances
+
 
 	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Resistance.Fire"),
@@ -201,9 +202,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 
-	/*
-	 ** Meta
-	 */
+
+	//  Meta
+
 
 	GameplayTags.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Meta.IncomingXP"),
@@ -211,9 +212,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 	
 
-	/*
-	 ** Map of Damage Types To Resistances
-	 */
+
+	// Map of Damage Types To Resistances
 
 	
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
@@ -221,9 +221,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
 
-	/*
-	 * Map of Damage Types to Debuffs
-	*/
+
+	// Map of Damage Types to Debuffs 
 	
 	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Arcane, GameplayTags.Debuff_Arcane);
 	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Lightning, GameplayTags.Debuff_Stun);
@@ -263,12 +262,16 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Lightning.Electrocute"),
 		FString("Electrocute Ability Tag")
 		);
+
+	// Ability Hitreact
 	
 	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.HitReact"),
 		FString("Hit React Ability")
 		);
 
+	// Ability Slot availability
+	
 	GameplayTags.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Status.Eligible"),
 		FString("Eligible Status")
@@ -289,6 +292,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Unlocked Status")
 		);
 
+	//Ability types
+	
 	GameplayTags.Abilities_Type_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Type.None"),
 		FString("Type None")
@@ -354,7 +359,5 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 				FName("Montage.Attack.4"),
 				FString("Attack 4")
 				);
-
-
 	
 }
