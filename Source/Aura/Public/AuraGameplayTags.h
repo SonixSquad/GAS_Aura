@@ -37,12 +37,6 @@ public:
 	FGameplayTag Attributes_Secondary_HealthRegen;
 	FGameplayTag Attributes_Secondary_ManaRegen;
 
-	//Resistance tags
-	FGameplayTag Attributes_Resistance_Fire;
-	FGameplayTag Attributes_Resistance_Lightning;
-	FGameplayTag Attributes_Resistance_Arcane;
-	FGameplayTag Attributes_Resistance_Physical;
-
 	//Meta tags
 	FGameplayTag Attributes_Meta_IncomingXP;
 	
@@ -64,6 +58,28 @@ public:
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
 
+	//Resistance tags
+	
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
+
+	//Debuff type tags
+	
+	FGameplayTag Debuff_Burn;
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Arcane;
+	FGameplayTag Debuff_Physical;
+
+	//Debuff property tags
+	
+	FGameplayTag Debuff_Chance;
+	FGameplayTag Debuff_Damage;
+	FGameplayTag Debuff_Duration;
+	FGameplayTag Debuff_Frequency;
+
+	
 	//Attack Ability tags
 	FGameplayTag Abilities_None;
 	
@@ -96,6 +112,7 @@ public:
 	FGameplayTag Montage_Attack_4;
 
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 	
 
 	//Hit Reaction Tags
