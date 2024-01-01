@@ -136,7 +136,7 @@ protected:
 
 	UPROPERTY()
 	FVector DeathImpulse = FVector::ZeroVector;
-
+	
 	UPROPERTY()
 	FVector KnockbackForce = FVector::ZeroVector;
 };
