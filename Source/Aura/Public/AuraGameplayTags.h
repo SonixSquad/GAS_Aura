@@ -115,8 +115,14 @@ public:
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 	
 
-	//Hit Reaction Tags
+	// Hit Reaction Tags
 	FGameplayTag Effects_HitReact;
+
+	// Block Input Tags
+	FGameplayTag Player_Block_InputPressed;
+	FGameplayTag Player_Block_InputHeld;
+	FGameplayTag Player_Block_InputReleased;
+	FGameplayTag Player_Block_CursorTrace;
 
 	
 
