@@ -40,11 +40,11 @@ public:
 	FWaitForEquipSelectionSignature WaitForEquipDelegate;
 
 	UPROPERTY(BlueprintAssignable)
-	FAbilitySlotReassignedSignature AbilitySlotReassignedDelegate;
-	
-	UPROPERTY(BlueprintAssignable)
 	FWaitForEquipSelectionSignature StopWaitingForEquipDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FAbilitySlotReassignedSignature AbilitySlotReassignedDelegate;
+	
 	UFUNCTION(BlueprintCallable)
 	void AbilitySlotSelected(const FGameplayTag& AbilityTag);
 
@@ -69,5 +69,6 @@ private:
 	FSelectedAbility SelectedAbility = { FAuraGameplayTags::Get().Abilities_None,  FAuraGameplayTags::Get().Abilities_Status_Locked };
 	int32 CurrentAbilityPoints = 0;
 	bool bWaitingForEquipSelection = false;
+	
 	FGameplayTag SelectedSlot;
 };
