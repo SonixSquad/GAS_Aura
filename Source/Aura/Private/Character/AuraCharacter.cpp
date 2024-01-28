@@ -156,6 +156,22 @@ int32 AAuraCharacter::GetAbilityPoints_Implementation() const
 	return AuraPlayerState->GetAbilityPoints();
 }
 
+void AAuraCharacter::ShowAoeAbility_Implementation(UMaterialInterface* DecalMaterial)
+{
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		AuraPlayerController->ShowAoeAbility(DecalMaterial);
+	}
+}
+
+void AAuraCharacter::HideAoeAbility_Implementation()
+{
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		AuraPlayerController->HideAoeAbility();
+	}
+}
+
 int32 AAuraCharacter::GetPlayerLevel_Implementation()
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();

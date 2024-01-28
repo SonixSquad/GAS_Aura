@@ -10,6 +10,8 @@
 #include "NavigationSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Actor/AoeAbility.h"
+#include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
@@ -27,6 +29,27 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
 	AutoRun();
+	UpdateAoeAbilityLocation();
+}
+
+void AAuraPlayerController::ShowAoeAbility(UMaterialInterface* DecalMaterial)
+{
+	if (!IsValid(AoeAbility))
+	{
+		AoeAbility = GetWorld()->SpawnActor<AAoeAbility>(AoeAbilityClass);
+		if (DecalMaterial)
+		{
+			AoeAbility->AoeAbilityDecal->SetMaterial(0, DecalMaterial);
+		}
+	}
+}
+
+void AAuraPlayerController::HideAoeAbility()
+{
+	if (IsValid(AoeAbility))
+	{
+		AoeAbility->Destroy();
+	}
 }
 
 void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit)
@@ -55,6 +78,14 @@ void AAuraPlayerController::AutoRun()
 		{
 			bAutoRunning = false;
 		}
+	}
+}
+
+void AAuraPlayerController::UpdateAoeAbilityLocation()
+{
+	if (IsValid(AoeAbility))
+	{
+		AoeAbility->SetActorLocation(CursorHit.ImpactPoint);
 	}
 }
 
