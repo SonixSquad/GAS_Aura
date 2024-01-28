@@ -97,10 +97,12 @@ public:
 	FGameplayTag Abilities_Type_Passive;
 	FGameplayTag Abilities_Type_None;
 
+	// Offenssive Ability Tags
 	FGameplayTag Abilities_Fire_FireBolt;
 	FGameplayTag Abilities_Cooldown_Fire_FireBolt;
 	FGameplayTag Abilities_Lightning_Electrocute;
-
+	FGameplayTag Abilities_Arcane_ArcaneShards;
+	
 	// Passive Ability Tags
 	FGameplayTag Abilities_Passive_HaloOfProtection;
 	FGameplayTag Abilities_Passive_LifeSiphon;

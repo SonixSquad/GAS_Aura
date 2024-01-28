@@ -161,6 +161,7 @@ void AAuraCharacter::ShowAoeAbility_Implementation(UMaterialInterface* DecalMate
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
 	{
 		AuraPlayerController->ShowAoeAbility(DecalMaterial);
+		AuraPlayerController->bShowMouseCursor = false;
 	}
 }
 
@@ -169,6 +170,7 @@ void AAuraCharacter::HideAoeAbility_Implementation()
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
 	{
 		AuraPlayerController->HideAoeAbility();
+		AuraPlayerController->bShowMouseCursor = true;
 	}
 }
 
