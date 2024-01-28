@@ -7,7 +7,8 @@
 AAoeAbility::AAoeAbility()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	
+	
 	AoeAbilityDecal = CreateDefaultSubobject<UDecalComponent>("AoeAbilityDecal");
 	AoeAbilityDecal->SetupAttachment(GetRootComponent());
 }
