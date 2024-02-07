@@ -24,31 +24,12 @@ ATotwBaseCharacter::ATotwBaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(GetMesh());
-	CameraBoom->TargetArmLength = 600.f;
-	CameraBoom->bUsePawnControlRotation = true;
-
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	FollowCamera->bUsePawnControlRotation = false;
-
-	bUseControllerRotationYaw = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-
-	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
-	OverheadWidget->SetupAttachment(RootComponent);
-
-
+	// Character Collision
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
-	
-	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
-	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
-	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ATotwBaseCharacter::Tick(float DeltaTime)
@@ -68,27 +49,41 @@ UAnimMontage* ATotwBaseCharacter::GetHitReactMontage_Implementation()
 		return HitReactMontage;
 	}
 
+FOnASCRegistered& ATotwBaseCharacter::GetOnASCRegisteredDelegate()
+{
+	return OnAscRegistered;
+}
+
 void ATotwBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
 
-void ATotwBaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-	{
-		Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-		//DOREPLIFETIME_CONDITION(ATotwBaseCharacter, OverlappingWeapon, COND_OwnerOnly);
-		//DOREPLIFETIME(ATotwBaseCharacter, Health);
-		//DOREPLIFETIME(ATotwBaseCharacter, bDisableGameplay);
-		//DOREPLIFETIME(ATotwBaseCharacter, bIsStunned);
-		//DOREPLIFETIME(ATotwBaseCharacter, bIsBurned);
-		//DOREPLIFETIME(ATotwBaseCharacter, bIsBeingShocked);
-	}
 
 void ATotwBaseCharacter::InitAbilityActorInfo()
 {
+	
 }
 
+void ATotwBaseCharacter::InitializeDefaultAttributes() const
+{
+	//ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
+	//ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	//ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
+}
 
+void ATotwBaseCharacter::AddCharacterAbilities()
+{
+	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	if (!HasAuthority()) return;
+	
+	AuraASC->AddCharacterAbilities(StartupAbilities);
+	AuraASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
+}
 
+ECharacterClass ATotwBaseCharacter::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}

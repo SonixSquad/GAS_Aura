@@ -6,9 +6,11 @@
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
-
+#include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Interaction/CombatInterface.h"
 #include "TotwBaseCharacter.generated.h"
 
+class UDebuffNiagaraComponent;
 class UAbilitySystemComponent;
 class UAttributeSet;
 class UGameplayEffect;
@@ -29,12 +31,31 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent(); //const override;
+	
+	virtual ECharacterClass GetCharacterClass_Implementation(); //override;
 
+	
 	/** Combat Interface **/
 	virtual UAnimMontage* GetHitReactMontage_Implementation(); //override;
-
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate(); //override;
 	/** END Combat Interface **/
+
+	FOnASCRegistered OnAscRegistered;
+
+	UPROPERTY(ReplicatedUsing=OnRep_Stunned, BlueprintReadOnly)
+	bool bIsStunned = false;
+
+	UPROPERTY(ReplicatedUsing=OnRep_Burned, BlueprintReadOnly)
+	bool bIsBurned = false;
+
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
 	
+	UFUNCTION()
+	virtual void OnRep_Stunned();
+
+	UFUNCTION()
+	virtual void OnRep_Burned();
 protected:
 	
 	virtual void BeginPlay() override;
@@ -51,17 +72,20 @@ protected:
 	
 	virtual void InitAbilityActorInfo();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
-	
+	virtual void InitializeDefaultAttributes() const;
+
+	void AddCharacterAbilities();
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 private:
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class USpringArmComponent* CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class UCameraComponent* FollowCamera;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UWidgetComponent* OverheadWidget;
+	
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> EffectAttachComponent;
