@@ -114,8 +114,8 @@ void AGunFactionHud::AddAnnouncement()
 	APlayerController* PlayerController = GetOwningPlayerController();
 	if (PlayerController && AnnouncementClass)
 	{
-		Announcement = CreateWidget<UAnnouncement>(PlayerController, AnnouncementClass);
-		Announcement->AddToViewport();
+		Announce = CreateWidget<UAnnounce>(PlayerController, AnnouncementClass);
+		Announce->AddToViewport();
 	}
 }
 

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Kerem Avcil 2024
 
 #pragma once
 
@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "UI/HUD/GunFactionHud.h"
 #include "Actor/WepTypes.h"
-#include "Interaction/GunCombatState.h"
+#include "Actor/GunWeps/GunCombatState.h"
 #include "GunCombatComponent.generated.h"
 
 #define TRACE_LENGTH 80000.f
@@ -158,11 +158,11 @@ private:
 	UFUNCTION()
 	void InitialiseCarriedAmmo();
 
-	UPROPERTY(ReplicatedUsing = OnRep_CombatState)
+	UPROPERTY(ReplicatedUsing = OnRep_GunCombatState)
 	EGunCombatState GunCombatState = EGunCombatState::ECS_Unoccupied;
 
 	UFUNCTION()
-	void OnRep_CombatState();
+	void OnRep_GunCombatState();
 
 	void UpdateAmmoValues();
 	

@@ -112,6 +112,9 @@ void AAuraPlayerController::CursorTrace()
 	}
 }
 
+/*************************
+* ABILITY INPUT TAG - PRESSED
+**************************/
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputPressed))
@@ -126,6 +129,9 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 	if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
 }
 
+/*************************
+* ABILITY INPUT TAG - RELEASED
+**************************/
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputReleased))
@@ -168,6 +174,9 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 }
 
+/*************************
+* ABILITY INPUT TAG - HELD
+**************************/
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTags::Get().Player_Block_InputHeld))
@@ -197,6 +206,9 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	}
 }
 
+/****************
+* GET ASC
+****************/
 UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 {
 	if (AuraAbilitySystemComponent == nullptr)
@@ -206,6 +218,9 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 	return AuraAbilitySystemComponent;
 }
 
+/**************
+ * BEGIN PLAY
+ *************/
 void AAuraPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -226,6 +241,9 @@ void AAuraPlayerController::BeginPlay()
 	SetInputMode(InputModeData);
 }
 
+/*************************
+* SETUP INPUT COMPONENT
+**************************/
 void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();

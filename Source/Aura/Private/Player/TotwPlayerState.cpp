@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "Character/TotwGunFaction.h"
 #include "Net/UnrealNetwork.h"
 
 ATotwPlayerState::ATotwPlayerState()
@@ -27,6 +28,7 @@ void ATotwPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(ATotwPlayerState, XP);
 	DOREPLIFETIME(ATotwPlayerState, AttributePoints);
 	DOREPLIFETIME(ATotwPlayerState, AbilityPoints);
+	DOREPLIFETIME(ATotwPlayerState, Defeats);
 }
 
 UAbilitySystemComponent* ATotwPlayerState::GetAbilitySystemComponent() const
@@ -93,4 +95,76 @@ void ATotwPlayerState::OnRep_XP(int32 OldXP)
 	OnXPChangedDelegate.Broadcast(XP);
 }
 
+// *** SHOOTER Player State ***
 
+
+
+
+/************************
+ *   ADD TO SCORE (Server)
+ ************************/
+void ATotwPlayerState::AddToScore(float ScoreAmount)
+{
+	SetScore(GetScore() + ScoreAmount);
+	GunCharacter = GunCharacter == nullptr ? Cast<ATotwGunFaction>(GetPawn()) : GunCharacter;
+	if (GunCharacter)
+	{
+		Controller = Controller == nullptr ? Cast<ATotwPlayerController>(GunCharacter->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDScore(GetScore());
+		}
+	}
+}
+
+
+/************************
+ *   ONREP SCORE (Client)
+ ************************/
+void ATotwPlayerState::OnRep_Score()
+{
+	Super::OnRep_Score();
+
+	GunCharacter = GunCharacter == nullptr ? Cast<ATotwGunFaction>(GetPawn()) : GunCharacter;
+	if (GunCharacter)
+	{
+		Controller = Controller == nullptr ? Cast<ATotwPlayerController>(GunCharacter->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDScore(GetScore());
+		}
+	}
+}
+
+/************************
+ *   ONREP DEFEATS
+ ************************/
+void ATotwPlayerState::OnRep_Defeats()
+{
+	GunCharacter = GunCharacter == nullptr ? Cast<ATotwGunFaction>(GetPawn()) : GunCharacter;
+	if (GunCharacter)
+	{
+		Controller = Controller == nullptr ? Cast<ATotwPlayerController>(GunCharacter->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDDefeats(Defeats);
+		}
+	}
+}
+
+/************************
+ *   ADD TO DEFEATS
+ ************************/
+void ATotwPlayerState::AddToDefeats(int32 DefeatsAmount)
+{
+	Defeats += DefeatsAmount;
+	GunCharacter = GunCharacter == nullptr ? Cast<ATotwGunFaction>(GetPawn()) : GunCharacter;
+	if (GunCharacter)
+	{
+		Controller = Controller == nullptr ? Cast<ATotwPlayerController>(GunCharacter->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDDefeats(Defeats);
+		}
+	}
+}

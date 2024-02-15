@@ -78,7 +78,7 @@ void AGunWep::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
-	DOREPLIFETIME(AGunWep, WeaponState);
+	DOREPLIFETIME(AGunWep, GunWepState);
 	DOREPLIFETIME(AGunWep, Ammo);
 }
 
@@ -115,13 +115,13 @@ void AGunWep::OnSPhereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
  *************************/
 void AGunWep::SetHUDAmmo()
 {
-	ShooterOwnerChar = ShooterOwnerChar == nullptr ? Cast<ATotwGunFaction>(GetOwner()) : ShooterOwnerChar;
-	if (ShooterOwnerChar)
+	GunFactionChar = GunFactionChar == nullptr ? Cast<ATotwGunFaction>(GetOwner()) : GunFactionChar;
+	if (GunFactionChar)
 	{
-		ShooterOwnerController = ShooterOwnerController == nullptr ? Cast<ATotwPlayerController>(ShooterOwnerChar->Controller) : ShooterOwnerController;
-		if (ShooterOwnerController)
+		GunFactionController = GunFactionController == nullptr ? Cast<ATotwPlayerController>(GunFactionChar->Controller) : GunFactionController;
+		if (GunFactionController)
 		{
-			ShooterOwnerController->SetHUDWeaponAmmo(Ammo);
+			GunFactionController->SetHUDWeaponAmmo(Ammo);
 		}
 	}
 }
@@ -140,7 +140,7 @@ void AGunWep::SpendRound()
  *************************/
 void AGunWep::OnRep_Ammo()
 {
-	ShooterOwnerChar = ShooterOwnerChar == nullptr ? Cast<ATotwGunFaction>(GetOwner()) : ShooterOwnerChar;
+	GunFactionChar = GunFactionChar == nullptr ? Cast<ATotwGunFaction>(GetOwner()) : GunFactionChar;
 	SetHUDAmmo();
 }
 
@@ -152,8 +152,8 @@ void AGunWep::OnRep_Owner()
 	Super::OnRep_Owner();
 	if (Owner == nullptr)
 	{
-		ShooterOwnerChar = nullptr;
-		ShooterOwnerController = nullptr;
+		GunFactionChar = nullptr;
+		GunFactionController = nullptr;
 	}
 	else
 	{
@@ -164,12 +164,12 @@ void AGunWep::OnRep_Owner()
 /*************************
  *    SET WEAPON STATE
  *************************/
-void AGunWep::SetWeaponState(EWeaponState State)
+void AGunWep::SetGunWepState(EGunWepState State)
 {
-	WeaponState = State;
-	switch (WeaponState)
+	GunWepState = State;
+	switch (GunWepState)
 	{
-	case EWeaponState::EWS_Equipped:
+	case EGunWepState::EWS_Equipped:
 		ShowPickupWidget(false);
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		//turn collision and physics OFF when wep is EQUIPPED
@@ -177,7 +177,7 @@ void AGunWep::SetWeaponState(EWeaponState State)
 		WeaponMesh->SetEnableGravity(false);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		break;
-	case EWeaponState::EWS_Dropped:
+	case EGunWepState::EWS_Dropped:
 		if (HasAuthority())
 		{
 			AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -194,17 +194,17 @@ void AGunWep::SetWeaponState(EWeaponState State)
 /*************************
  *    ONREP WEAPON STATE
  *************************/
-void AGunWep::OnRep_WeaponState()
+void AGunWep::OnRep_GunWepState()
 {
-	switch (WeaponState)
+	switch (GunWepState)
 	{
-	case  EWeaponState::EWS_Equipped:
+	case  EGunWepState::EWS_Equipped:
 		ShowPickupWidget(false);
 		WeaponMesh->SetSimulatePhysics(false);
 		WeaponMesh->SetEnableGravity(false);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		break;
-	case EWeaponState::EWS_Dropped:
+	case EGunWepState::EWS_Dropped:
 		WeaponMesh->SetSimulatePhysics(true);
 		WeaponMesh->SetEnableGravity(true);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -267,13 +267,13 @@ bool AGunWep::IsEmpty()
  *************************/
 void AGunWep::Dropped()
 {
-	SetWeaponState(EWeaponState::EWS_Dropped);
+	SetGunWepState(EGunWepState::EWS_Dropped);
 	FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);
 	WeaponMesh->DetachFromComponent(DetachRules);
 	SetOwner(nullptr);
 
-	ShooterOwnerChar = nullptr;
-	ShooterOwnerController = nullptr;
+	GunFactionChar = nullptr;
+	GunFactionController = nullptr;
 }
 
 

@@ -9,7 +9,7 @@
 #include "GunWep.generated.h"
 
 UENUM(BlueprintType)
-enum class EWeaponState : uint8
+enum class EGunWepState : uint8
 {
 	EWS_Initial UMETA(DisplayName = "Initial State"),
 	EWS_Equipped UMETA(DisplayName = "Equipped"),
@@ -17,6 +17,22 @@ enum class EWeaponState : uint8
 
 	EWS_MAX UMETA(DisplayNAme = "DefaultMAX")
 };
+
+UENUM(BlueprintType)
+enum class EGunType : uint8
+{
+	E_Single	UMETA(DisplayName = "Single"),
+	E_Burst		UMETA(DisplayName = "Burst"),
+	E_Auto		UMETA(DisplayName = "Automatic")
+};
+
+UENUM(BlueprintType)
+enum class EGunBulletType : uint8
+{
+	E_Projectile	UMETA(DisplayName = "Projectile"),
+	E_Hitscan		UMETA(DisplayName = "Hitscan")
+};
+
 UCLASS()
 class AURA_API AGunWep : public AActor
 {
@@ -116,22 +132,22 @@ public:
 	
 
 private:
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UPROPERTY(VisibleAnywhere, Category = "GunFactionWeps")
 	USkeletalMeshComponent* WeaponMesh;
 	
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UPROPERTY(VisibleAnywhere, Category = "GunFactionWeps")
 	class USphereComponent* AreaSphere;
 
-	UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere, Category = "Weapon Properties")
-	EWeaponState WeaponState;
+	UPROPERTY(ReplicatedUsing = OnRep_GunWepState, VisibleAnywhere, Category = "GunFactionWeps")
+	EGunWepState GunWepState;
 
 	UFUNCTION()
-	void OnRep_WeaponState();
+	void OnRep_GunWepState();
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UPROPERTY(VisibleAnywhere, Category = "GunFactionWeps")
 	class UWidgetComponent* PickupWidget;
 
-	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	UPROPERTY(EditAnywhere, Category = "GunFactionWeps")
 	class UAnimationAsset* FireAnimation;
 
 	UPROPERTY(EditAnywhere)
@@ -150,15 +166,15 @@ private:
 	int32 MagCapacity;
 
 	UPROPERTY()
-	class ATotwGunFaction* ShooterOwnerChar;
+	class ATotwGunFaction* GunFactionChar;
 	UPROPERTY()
-	class ATotwPlayerController* ShooterOwnerController;
+	class ATotwPlayerController* GunFactionController;
 
 	UPROPERTY(EditAnywhere)
 	EWeaponType WeaponType;
 	
 public:
-	void SetWeaponState(EWeaponState State);
+	void SetGunWepState(EGunWepState State);
 	//FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; } //debug only
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 	FORCEINLINE float GetZoomedFOV() const { return ZoomedFOV; }
@@ -168,6 +184,12 @@ public:
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
 	FORCEINLINE int32 GetAmmo() const { return Ammo; }
 	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GunFactionWeps")
+	EGunBulletType GunBulletType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GunFactionWeps")
+	EGunType GunType;
 };
 
 

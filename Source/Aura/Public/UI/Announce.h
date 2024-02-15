@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class AURA_API UAnnouncement : public UUserWidget
+class AURA_API UAnnounce : public UUserWidget
 {
 	GENERATED_BODY()
 

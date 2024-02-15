@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Kerem Avcil 2024
 
 
 #include "Actor/GunWeps/GunCombatComponent.h"
@@ -15,6 +15,7 @@
 #include "Camera/CameraComponent.h"
 #include "TimerManager.h"
 #include "Character/TotwGunFaction.h"
+#include "Interaction/CrosshairInterface.h"
 #include "Sound/SoundCue.h"
 
 
@@ -174,7 +175,7 @@ void UGunCombatComponent::EquipWeapon(AGunWep* WeaponToEquip)
 		EquippedWeapon->Dropped();
 	}
 	EquippedWeapon = WeaponToEquip;
-	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
+	EquippedWeapon->SetGunWepState(EGunWepState::EWS_Equipped);
 	const USkeletalMeshSocket* HandSocket = GunCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket"));
 	if (HandSocket)
 	{
@@ -324,7 +325,7 @@ void UGunCombatComponent::OnRep_EquippedWeapon()
 {
 	if (EquippedWeapon && GunCharacter)
 	{
-		EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
+		EquippedWeapon->SetGunWepState(EGunWepState::EWS_Equipped);
 		const USkeletalMeshSocket* HandSocket = GunCharacter->GetMesh()->GetSocketByName(FName("RightHandSocket"));
 		if (HandSocket)
 		{
@@ -383,7 +384,7 @@ void UGunCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 			End,
 			ECollisionChannel::ECC_Visibility
 			);
-		if (TraceHitResult.GetActor() && TraceHitResult.GetActor()->Implements<UInteractWithCrosshairs_Interface>())
+		if (TraceHitResult.GetActor() && TraceHitResult.GetActor()->Implements<UCrosshairInterface>())
 		{
 			HUDPackage.CrosshairsColor = FLinearColor::Red;
 		}

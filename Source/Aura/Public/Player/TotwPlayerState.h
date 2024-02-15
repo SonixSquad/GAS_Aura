@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "TotwPlayerController.h"
 #include "GameFramework/PlayerState.h"
 #include "TotwPlayerState.generated.h"
 
@@ -81,4 +82,30 @@ private:
 
 	UFUNCTION()
 	void OnRep_AbilityPoints(int32 OldAbilityPoints);
+
+
+	
+	// *** SHOOTER Player State ***
+
+public:
+
+	
+	//replication notifies
+	virtual void OnRep_Score() override;
+
+	UFUNCTION()
+	virtual void OnRep_Defeats();
+	
+	void AddToScore(float ScoreAmount);
+	void AddToDefeats(int32 DefeatsAmount);
+private:
+
+	UPROPERTY()
+	class ATotwGunFaction* GunCharacter;
+	
+	UPROPERTY()
+	class ATotwPlayerController* Controller;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Defeats)
+	int32 Defeats;
 };

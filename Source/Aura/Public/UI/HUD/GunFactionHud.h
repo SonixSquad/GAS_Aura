@@ -45,7 +45,7 @@ public:
 	TSubclassOf<UUserWidget> AnnouncementClass;
 	
 	UPROPERTY()
-	class UAnnouncement* Announcement;
+	class UAnnounce* Announce;
 
 	void AddAnnouncement();
 	

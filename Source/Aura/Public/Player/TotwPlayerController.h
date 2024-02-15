@@ -1,14 +1,12 @@
-// Copyright Kerem Avcil.
+// Copyright Kerem Avcil 2024
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "GameplayTagContainer.h"
-#include "UI/Widget/DamageTextComponent.h"
 
 #include "TotwPlayerController.generated.h"
-
 
 class UNiagaraSystem;
 class UDamageTextComponent;
@@ -28,58 +26,129 @@ UCLASS()
 class AURA_API ATotwPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
 public:
-	ATotwPlayerController();
 	virtual void PlayerTick(float DeltaTime) override;
+	void SetHUDHealth(float Health, float MaxHealth);
+	void SetHUDScore(float Score);
+	void SetHUDDefeats(int32 Defeats);
+	void SetHUDWeaponAmmo(int32 Ammo);
+	void SetHUDCarriedAmmo(int32 Ammo);
+	void SetHUDMatchCountdown(float CountdownTime);
+	void SetHUDAnnouncementCountdown(float CountdownTime);
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
+	virtual float GetServerTime(); //synced with server clock
+	virtual void ReceivedPlayer() override; // sync with server clock as soon as possible
 
-	UFUNCTION(BlueprintCallable)
-	void ShowAoeAbility(UMaterialInterface* DecalMaterial = nullptr);
+	void OnMatchStateSet(FName State);
+	void HandleMatchHasStarted();
+	void HandleCooldown();
 
-	UFUNCTION(BlueprintCallable)
-	void HideAoeAbility();
-
-	
 protected:
+
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	
+	void SetHUDTime();
 
+	void PollInit();
+
+/************************************
+ * SYNC TIME BETWEEN CLIENT & SERVER
+ ***********************************/
+
+	// Requests current server time, passing in the clients time when request was sent.
+	UFUNCTION(Server, Reliable)
+	void ServerRequestServerTime(float TimeOfClientRequest);
+
+	// Reports current server time, passing in the clients time when request was sent and time server received.
+	UFUNCTION(Client, Reliable)
+	void ClientReportServerTime(float TimeOfClientRequest, float TimeServerReceivedClientRequest);
+
+	float ClientServerDelta = 0.f; //difference between client and server time
+
+	UPROPERTY(EditAnywhere, Category = Time)
+	float TimeSyncFrequency = 5.f; //time sync interval
+
+	float TimeSyncRunningTime = 0.f;
+
+	void CheckTimeSync(float DeltaTime);
+
+	UFUNCTION(Server, Reliable)
+	void ServerCheckMatchState();
+
+	UFUNCTION(Client, Reliable)
+	void ClientJoinMidGame(FName StateOfMatch, float Warmup, float Match, float Cooldown, float StartingTime);
 private:
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputMappingContext> AuraContext;
-	
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputAction> MoveAction;
-
-	UPROPERTY(EditAnywhere, Category="Input")
-	TObjectPtr<UInputAction> ShiftAction;
-
-	void ShiftPressed() { bShiftKeyDown = true; }
-	void ShiftReleased() { bShiftKeyDown = false; }
-	bool bShiftKeyDown = false;
-
-	
-	void Move(const FInputActionValue& InputActionValue);
-
-	void CursorTrace();
-	IEnemyInterface* LastActor;
-	IEnemyInterface* ThisActor;
-	FHitResult CursorHit;
-
-	void AbilityInputTagPressed(FGameplayTag InputTag);
-	void AbilityInputTagReleased(FGameplayTag InputTag);
-	void AbilityInputTagHeld(FGameplayTag InputTag);
-
-	
-	UPROPERTY(EditDefaultsOnly, Category="Input")
-	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 
 	UAuraAbilitySystemComponent* GetASC();
+	
+	// *** ENHANCED INPUT ***
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputMappingContext> TotwContext;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> LookUpAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ShootAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction>ADSAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ReloadAction;
+
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> MeleeAction;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
+
+	void Move(const FInputActionValue& InputActionValue);
+	void LookUp(const FInputActionValue& InputActionValue);
+
+	void Shoot(const FInputActionValue& InputActionValue);
+	void ADS(const FInputActionValue& InputActionValue);
+	void Reload(const FInputActionValue& InputActionValue);
+	void Melee(const FInputActionValue& InputActionValue);
+	
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	void ShiftPressed() { bShiftKeyDown = true; }
+	void ShiftReleased() { bShiftKeyDown = false; }
+	bool bShiftKeyDown = false;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+	
+	UPROPERTY()
+	class AGunFactionHud* GunFactionHud;
+
+	void CursorTrace();
+	IEnemyInterface* LastActor;
+	IEnemyInterface* ThisActor;
+	//FHitResult CursorHit;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
+	
+	UPROPERTY()
+	class ATotwGameModeBase* TotwGameMode;
 
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.f;
@@ -87,19 +156,27 @@ private:
 	bool bAutoRunning = false;
 	bool bTargeting = false;
 	
-	UPROPERTY(EditDefaultsOnly)
-	float AutoRunAcceptanceRadius = 50.f;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USplineComponent> Spline;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
+	float LevelStartingTime = 0.f;
+	float MatchTime = 0.f;
+	float WarmupTime = 0.f;
+	float CooldownTime = 0.f;
+	uint32 CountdownInt = 0;
 	
-	void AutoRun();
+	UPROPERTY(ReplicatedUsing = OnRep_MatchState)
+	FName MatchState;
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+	UFUNCTION()
+	void OnRep_MatchState();
+
+	UPROPERTY()
+	class UGunCharacterOverlay* CharacterOverlay;
+
+	bool bInitialiseCharacterOverlay = false;
+	float HUDHealth;
+	float HUDMaxHealth;
+	int32 HUDDefeats;
+	float HUDScore;
+	
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AAoeAbility> AoeAbilityClass;
@@ -109,3 +186,6 @@ private:
 
 	void UpdateAoeAbilityLocation();
 };
+
+
+
